@@ -47,7 +47,7 @@ Widget _makeName() {
 
 Widget _makePrice() {
   return TextField(
-    keyboardType: TextInputType.number,
+    keyboardType: TextInputType.numberWithOptions(decimal: true),
     decoration: InputDecoration(labelText: 'Producto'),
   );
 }
