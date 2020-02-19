@@ -1,4 +1,5 @@
 import 'package:crud_productos/src/models/product_model.dart';
+import 'package:crud_productos/src/providers/product_provider.dart';
 import 'package:crud_productos/src/utils/utils.dart' as Utils;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   final formKey = GlobalKey<FormState>();
   ProductModel product = ProductModel();
+  final productProvider = ProductsProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -110,5 +112,7 @@ class _ProductPageState extends State<ProductPage> {
     print(product.title);
     print(product.price);
     print(product.available);
+
+    productProvider.createProduct(product);
   }
 }
