@@ -1,3 +1,4 @@
+import 'package:crud_productos/src/models/product_model.dart';
 import 'package:crud_productos/src/utils/utils.dart' as Utils;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final formKey = GlobalKey<FormState>();
+  ProductModel product = ProductModel();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,12 @@ class _ProductPageState extends State<ProductPage> {
     Widget form = Form(
       key: formKey,
       child: Column(
-        children: <Widget>[_makeName(), _makePrice(), _makeButton()],
+        children: <Widget>[
+          _makeName(),
+          _makePrice(),
+          _makeAvailable(),
+          _makeButton()
+        ],
       ),
     );
 
@@ -49,8 +56,10 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _makeName() {
     return TextFormField(
+        initialValue: product.title,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(labelText: 'Producto'),
+        onSaved: (value) => product.title = value,
         validator: (value) {
           return (value.length < 3) ? 'Ingrese el nombre del producto' : null;
         });
@@ -58,8 +67,10 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _makePrice() {
     return TextFormField(
+        initialValue: product.price.toString(),
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         decoration: InputDecoration(labelText: 'Producto'),
+        onSaved: (value) => product.price = double.parse(value),
         validator: (value) {
           return (Utils.isNumeric(value))
               ? null
@@ -79,9 +90,25 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  void _submit() {
-    if(!formKey.currentState.validate()) return;
+  Widget _makeAvailable() {
+    return SwitchListTile(
+      activeColor: Color(0xfff7892b),
+      inactiveThumbColor: Color(0xfffbb448),
+      inactiveTrackColor: Color(0xfffbb448),
+      value: product.available,
+      title: Text('Disponible'),
+      onChanged: (value) => setState(() {
+        product.available = value;
+      }),
+    );
+  }
 
+  void _submit() {
+    if (!formKey.currentState.validate()) return;
+    formKey.currentState.save();
     print('Todo ok');
+    print(product.title);
+    print(product.price);
+    print(product.available);
   }
 }
