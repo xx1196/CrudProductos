@@ -1,7 +1,15 @@
+import 'package:crud_productos/src/utils/utils.dart' as Utils;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
+  @override
+  _ProductPageState createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final actions = <Widget>[
@@ -20,6 +28,7 @@ class ProductPage extends StatelessWidget {
     );
 
     Widget form = Form(
+      key: formKey,
       child: Column(
         children: <Widget>[_makeName(), _makePrice(), _makeButton()],
       ),
@@ -31,35 +40,48 @@ class ProductPage extends StatelessWidget {
         child: form,
       ),
     );
+
     return Scaffold(
       appBar: appBar,
       body: body,
     );
   }
-}
 
-Widget _makeName() {
-  return TextField(
-    textCapitalization: TextCapitalization.sentences,
-    decoration: InputDecoration(labelText: 'Producto'),
-  );
-}
+  Widget _makeName() {
+    return TextFormField(
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(labelText: 'Producto'),
+        validator: (value) {
+          return (value.length < 3) ? 'Ingrese el nombre del producto' : null;
+        });
+  }
 
-Widget _makePrice() {
-  return TextField(
-    keyboardType: TextInputType.numberWithOptions(decimal: true),
-    decoration: InputDecoration(labelText: 'Producto'),
-  );
-}
+  Widget _makePrice() {
+    return TextFormField(
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        decoration: InputDecoration(labelText: 'Producto'),
+        validator: (value) {
+          return (Utils.isNumeric(value))
+              ? null
+              : 'Por favor inserte solo números';
+        });
+  }
 
-Widget _makeButton() {
-  return RaisedButton.icon(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    color: Color(0xfff7892b),
-    icon: Icon(Icons.save),
-    label: Text('Guardar'),
-    onPressed: () {},
-  );
+  Widget _makeButton() {
+    return RaisedButton.icon(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      color: Color(0xfff7892b),
+      icon: Icon(Icons.save),
+      label: Text('Guardar'),
+      onPressed: _submit,
+    );
+  }
+
+  void _submit() {
+    if(!formKey.currentState.validate()) return;
+
+    print('Todo ok');
+  }
 }
