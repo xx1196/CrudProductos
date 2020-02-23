@@ -150,14 +150,16 @@ class _ProductPageState extends State<ProductPage> {
     if (product.photoUrl != null) {
       //TODO: tengo que hacer la foto
       return Container();
-    } else if (photo == null) {
-      return Image(
-        image: AssetImage('assets/no-image.png'),
-        height: 300.0,
-        fit: BoxFit.cover,
-      );
     } else {
-      return Image.file(photo, height: 300.0, fit: BoxFit.cover);
+      if (photo != null) {
+        return Image.file(
+          photo,
+          height: 300.0,
+          fit: BoxFit.cover,
+        );
+      }
+      return Image.asset('assets/no-image.png',
+          height: 300.0, fit: BoxFit.cover);
     }
   }
 
