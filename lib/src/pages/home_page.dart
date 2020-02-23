@@ -52,7 +52,24 @@ class HomePage extends StatelessWidget {
     final listTitle = ListTile(
       title: Text('${product.title} - ${product.price}'),
       subtitle: Text(product.id),
-      onTap: () => Navigator.pushNamed(context, 'product',arguments: product),
+      onTap: () => Navigator.pushNamed(context, 'product', arguments: product),
+    );
+
+    final card = Card(
+      child: Column(
+        children: <Widget>[
+          (product.photoUrl == null) ? Image(
+            image: AssetImage('assets/no-image.png'),
+          ) : FadeInImage(
+            image: NetworkImage(product.photoUrl),
+            placeholder: AssetImage('assets/jar-loading.gif'),
+            height: 300.0,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          listTitle
+        ],
+      ),
     );
 
     return Dismissible(
@@ -64,7 +81,7 @@ class HomePage extends StatelessWidget {
       background: Container(
         color: Color(0xFFE65100),
       ),
-      child: listTitle,
+      child: card,
     );
   }
 }

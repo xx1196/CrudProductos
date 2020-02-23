@@ -101,7 +101,7 @@ class _ProductPageState extends State<ProductPage> {
       ),
       color: Color(0xfff7892b),
       icon: Icon(Icons.save),
-      label: Text('Guardar'),
+      label: Text(_saving ? 'Guardando...' : 'Guardar'),
       onPressed: (_saving) ? null : _submit,
     );
   }
@@ -152,8 +152,11 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _showPhoto() {
     if (product.photoUrl != null) {
-      //TODO: tengo que hacer la foto
-      return Container();
+      return FadeInImage(
+        image: NetworkImage(product.photoUrl),
+        placeholder: AssetImage('assets/jar-loading.gif'),
+        fit: BoxFit.cover,
+      );
     } else {
       if (photo != null) {
         return Image.file(
@@ -179,7 +182,7 @@ class _ProductPageState extends State<ProductPage> {
     photo = await ImagePicker.pickImage(source: origin);
 
     if (photo != null) {
-      //TODO: Limpiar
+      product.photoUrl = null;
     }
 
     setState(() {});
