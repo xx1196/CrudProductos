@@ -11,8 +11,10 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final formKey = GlobalKey<FormState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   ProductModel product = ProductModel();
   final productProvider = ProductsProvider();
+  bool _saving = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +59,7 @@ class _ProductPageState extends State<ProductPage> {
     );
 
     return Scaffold(
+      key: scaffoldKey,
       appBar: appBar,
       body: body,
     );
@@ -94,7 +97,7 @@ class _ProductPageState extends State<ProductPage> {
       color: Color(0xfff7892b),
       icon: Icon(Icons.save),
       label: Text('Guardar'),
-      onPressed: _submit,
+      onPressed: (_saving) ? null : _submit,
     );
   }
 
@@ -114,15 +117,27 @@ class _ProductPageState extends State<ProductPage> {
   void _submit() {
     if (!formKey.currentState.validate()) return;
     formKey.currentState.save();
-    print('Todo ok');
-    print(product.title);
-    print(product.price);
-    print(product.available);
+
+    setState(() {
+      _saving = true;
+    });
 
     if (product.id == null) {
       productProvider.createProduct(product);
+      showSnackBar('producto guardado');
     } else {
       productProvider.updateProduct(product);
+      showSnackBar('producto modificado');
     }
+    Navigator.pop(context);
+  }
+
+  void showSnackBar(String message) {
+    final snackbar = SnackBar(
+      content: Text(message),
+      duration: Duration(milliseconds: 1850),
+    );
+
+    scaffoldKey.currentState.showSnackBar(snackbar);
   }
 }
