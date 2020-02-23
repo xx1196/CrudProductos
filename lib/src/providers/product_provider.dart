@@ -15,15 +15,15 @@ class ProductsProvider {
   Future<List<ProductModel>> loadProducts() async {
     final List<ProductModel> products = List();
 
-    databaseReference.getDocuments().then((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((f) => () {
-            final ProductModel productTemp = ProductModel.fromJson(f.data);
-            productTemp.id = f.documentID;
-            products.add(productTemp);
-          });
+    await databaseReference.getDocuments().then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((DocumentSnapshot doc) {
+        final ProductModel productTemp = ProductModel.fromJson(doc.data);
+        productTemp.id = doc.documentID;
+        products.add(productTemp);
+      });
     });
 
-    print(products);
+    print(products[0].id);
     return products;
   }
 }

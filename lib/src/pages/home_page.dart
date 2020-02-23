@@ -30,12 +30,14 @@ class HomePage extends StatelessWidget {
       future: productProvider.loadProducts(),
       builder:
           (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
-        if (!snapshot.hasData) {
-          return Container();
-        } else {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-              child: CircularProgressIndicator(
-                  backgroundColor: Color(0xfff7892b)));
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Color(0xfff7892b)),
+            ),
+          );
+        } else {
+          return Center();
         }
       },
     );
