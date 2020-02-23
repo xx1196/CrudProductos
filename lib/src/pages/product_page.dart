@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:crud_productos/src/models/product_model.dart';
 import 'package:crud_productos/src/providers/product_provider.dart';
 import 'package:crud_productos/src/utils/utils.dart' as Utils;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class _ProductPageState extends State<ProductPage> {
   ProductModel product = ProductModel();
   final productProvider = ProductsProvider();
   bool _saving = false;
+  File photo;
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +31,11 @@ class _ProductPageState extends State<ProductPage> {
     final actions = <Widget>[
       IconButton(
         icon: Icon(Icons.photo_size_select_actual),
-        onPressed: () {},
+        onPressed: _selectPicture,
       ),
       IconButton(
         icon: Icon(Icons.camera_alt),
-        onPressed: () {},
+        onPressed: _takePicture,
       ),
     ];
     Widget appBar = AppBar(
@@ -43,6 +47,7 @@ class _ProductPageState extends State<ProductPage> {
       key: formKey,
       child: Column(
         children: <Widget>[
+          _showPhoto(),
           _makeName(),
           _makePrice(),
           _makeAvailable(),
@@ -140,4 +145,35 @@ class _ProductPageState extends State<ProductPage> {
 
     scaffoldKey.currentState.showSnackBar(snackbar);
   }
+
+  Widget _showPhoto() {
+    if (product.photoUrl != null) {
+      //TODO: tengo que hacer la foto
+      return Container();
+    } else if (photo == null) {
+      return Image(
+        image: AssetImage('assets/no-image.png'),
+        height: 300.0,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.file(
+        photo,
+        height: 300.0,
+        fit: BoxFit.cover
+      );
+    }
+  }
+
+  _selectPicture() async {
+    photo = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    if (photo != null) {
+      //TODO: Limpiar
+    }
+
+    setState(() {});
+  }
+
+  _takePicture() {}
 }
