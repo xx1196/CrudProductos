@@ -56,9 +56,9 @@ class HomePage extends StatelessWidget {
     );
 
     return Dismissible(
-      onDismissed: (direction){
+      onDismissed: (direction) {
         print(direction);
-        //TODO: Borrar producto
+        productProvider.deleteProduct(product.id);
       },
       key: UniqueKey(),
       background: Container(
