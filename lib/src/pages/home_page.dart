@@ -37,9 +37,34 @@ class HomePage extends StatelessWidget {
             ),
           );
         } else {
-          return Center();
+          final products = snapshot.data;
+          return ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, i) {
+                return _makeProductItem(context, products[i]);
+              });
         }
       },
+    );
+  }
+
+  Widget _makeProductItem(BuildContext context, ProductModel product) {
+    final listTitle = ListTile(
+      title: Text('${product.title} - ${product.price}'),
+      subtitle: Text(product.id),
+      onTap: () => Navigator.pushNamed(context, 'product'),
+    );
+
+    return Dismissible(
+      onDismissed: (direction){
+        print(direction);
+        //TODO: Borrar producto
+      },
+      key: UniqueKey(),
+      background: Container(
+        color: Color(0xFFE65100),
+      ),
+      child: listTitle,
     );
   }
 }
