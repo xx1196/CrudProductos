@@ -157,16 +157,20 @@ class _ProductPageState extends State<ProductPage> {
         fit: BoxFit.cover,
       );
     } else {
-      return Image.file(
-        photo,
-        height: 300.0,
-        fit: BoxFit.cover
-      );
+      return Image.file(photo, height: 300.0, fit: BoxFit.cover);
     }
   }
 
   _selectPicture() async {
-    photo = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _processImage(ImageSource.gallery);
+  }
+
+  _takePicture() async {
+    _processImage(ImageSource.camera);
+  }
+
+  _processImage(ImageSource origin) async {
+    photo = await ImagePicker.pickImage(source: origin);
 
     if (photo != null) {
       //TODO: Limpiar
@@ -174,6 +178,4 @@ class _ProductPageState extends State<ProductPage> {
 
     setState(() {});
   }
-
-  _takePicture() {}
 }
