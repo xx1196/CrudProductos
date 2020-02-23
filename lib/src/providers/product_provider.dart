@@ -10,6 +10,12 @@ class ProductsProvider {
     return true;
   }
 
+  Future<bool> updateProduct(ProductModel product) async {
+    await databaseReference.document(product.id).updateData(product.toJson());
+
+    return true;
+  }
+
   Future<List<ProductModel>> loadProducts() async {
     final List<ProductModel> products = List();
 
