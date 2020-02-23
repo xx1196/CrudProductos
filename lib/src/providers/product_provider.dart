@@ -1,32 +1,28 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crud_productos/src/models/product_model.dart';
-import 'package:http/http.dart' as Http;
 
 class ProductsProvider {
   final String _url = "https://products-99367.firebaseio.com";
+  final databaseReference = Firestore.instance.collection("users");
 
   Future<bool> createProduct(ProductModel product) async {
-    final urlProducts = "$_url/products.json";
-    final resp =
-        await Http.post(urlProducts, body: productModelToJson(product));
+    await databaseReference.add(product.toJson());
 
-    final decodedData = json.decode(resp.body);
-    print(decodedData);
+    print(databaseReference.id);
     return true;
   }
 
   Future<List<ProductModel>> loadProducts() async {
-    final urlProducts = "$_url/products.json";
-    final resp = await Http.get(urlProducts);
     final List<ProductModel> products = List();
-    final Map<String, dynamic> decodedData = json.decode(resp.body);
-    if (decodedData == null) return [];
-    decodedData.forEach((id, product) {
-      final productTemp = ProductModel.fromJson(product);
-      productTemp.id = id;
-      products.add(productTemp);
+
+    databaseReference.getDocuments().then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((f) => () {
+            final ProductModel productTemp = ProductModel.fromJson(f.data);
+            productTemp.id = f.documentID;
+            products.add(productTemp);
+          });
     });
+
     print(products);
     return products;
   }
