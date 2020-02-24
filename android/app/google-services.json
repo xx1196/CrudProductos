@@ -30,6 +30,13 @@
             {
               "client_id": "461125690150-njtse7qjfbibf2i6l4mmmufthembkrdl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "461125690150-1suhjrfftlc3o5vb76v1hpit16h5j8pk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.xx1196.crudProductos"
+              }
             }
           ]
         }
