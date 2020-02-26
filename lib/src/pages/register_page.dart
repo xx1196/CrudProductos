@@ -1,5 +1,5 @@
 import 'package:crud_productos/src/bloc/provider.dart';
-import 'package:crud_productos/src/providers/user_proider.dart';
+import 'package:crud_productos/src/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
