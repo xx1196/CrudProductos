@@ -1,5 +1,6 @@
 import 'package:crud_productos/src/bloc/provider.dart';
 import 'package:crud_productos/src/providers/user_provider.dart';
+import 'package:crud_productos/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -211,9 +212,12 @@ class LoginPage extends StatelessWidget {
         });
   }
 
-  _login(BuildContext context, LoginBloc bloc) {
-    userProvider.login(bloc.email, bloc.password);
-
-    //Navigator.pushReplacementNamed(context, 'home');
+  _login(BuildContext context, LoginBloc bloc) async {
+    Map info = await userProvider.login(bloc.email, bloc.password);
+    if (info['ok']) {
+      Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      showAlert(context, 'Algo ha pasado :(',info['message']);
+    }
   }
 }

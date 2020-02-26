@@ -1,5 +1,6 @@
 import 'package:crud_productos/src/bloc/provider.dart';
 import 'package:crud_productos/src/providers/user_provider.dart';
+import 'package:crud_productos/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -15,19 +16,16 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-
   Widget _makeBackGround(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
 
     final colorGradient = <Color>[Color(0xfffbb448), Color(0xfff7892b)];
 
     final purpleBckGround = Container(
       height: size.height * .4,
       width: double.infinity,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(colors: colorGradient)),
+      decoration:
+          BoxDecoration(gradient: LinearGradient(colors: colorGradient)),
     );
 
     final circle = Container(
@@ -83,9 +81,7 @@ class RegisterPage extends StatelessWidget {
 
   Widget _loginForm(BuildContext context) {
     final bloc = Provider.of(context);
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
 
     final boxShadow = <BoxShadow>[
       BoxShadow(
@@ -204,21 +200,24 @@ class RegisterPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
               child: Text('Regístrate'),
             ),
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.0)),
             elevation: 0.8,
             color: Color(0xfff7892b),
             textColor: Colors.white,
             disabledColor: Color(0xfffbb448),
-            onPressed: (snapshot.hasData)
-                ? () => _register(context, bloc)
-                : null,
+            onPressed:
+                (snapshot.hasData) ? () => _register(context, bloc) : null,
           );
         });
   }
 
-  _register(BuildContext context, LoginBloc bloc) {
-    userProvider.newUser(bloc.email, bloc.password);
-    //Navigator.pushReplacementNamed(context, 'home');
+  _register(BuildContext context, LoginBloc bloc) async {
+    final info = await userProvider.newUser(bloc.email, bloc.password);
+    if (info['ok']) {
+      Navigator.pushReplacementNamed(context, 'home');
+    } else {
+      showAlert(context, 'Algo ha pasado :(', info['message']);
+    }
   }
 }
