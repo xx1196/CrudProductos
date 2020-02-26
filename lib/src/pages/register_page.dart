@@ -1,7 +1,7 @@
 import 'package:crud_productos/src/bloc/provider.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget body = Stack(
@@ -104,7 +104,7 @@ Widget _loginForm(BuildContext context) {
     child: Column(
       children: <Widget>[
         Text(
-          'Ingreso',
+          'Registro',
           style: TextStyle(fontSize: 20.0),
         ),
         SizedBox(
@@ -129,8 +129,8 @@ Widget _loginForm(BuildContext context) {
         safeArea,
         _loginBox,
         FlatButton(
-          child: Text('Crea una nueva cuenta'),
-          onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
+          child: Text('Ingresa aquí'),
+          onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
         ),
         SizedBox(
           height: 25.0,
