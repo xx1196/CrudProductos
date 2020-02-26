@@ -3,9 +3,16 @@ import 'package:crud_productos/src/pages/home_page.dart';
 import 'package:crud_productos/src/pages/login_page.dart';
 import 'package:crud_productos/src/pages/product_page.dart';
 import 'package:crud_productos/src/pages/register_page.dart';
+import 'package:crud_productos/src/utils/user_preferences.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = UserPreferences();
+  await prefs.initPrefs();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -19,9 +26,7 @@ class MyApp extends StatelessWidget {
         'home': (BuildContext context) => HomePage(),
         'product': (BuildContext context) => ProductPage()
       },
-      theme: ThemeData(
-        primaryColor: Colors.orange
-      ),
+      theme: ThemeData(primaryColor: Colors.orange),
     );
 
     return Provider(child: materialApp);

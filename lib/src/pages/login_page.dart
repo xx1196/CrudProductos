@@ -213,6 +213,7 @@ class LoginPage extends StatelessWidget {
 
   _login(BuildContext context, LoginBloc bloc) {
     userProvider.login(bloc.email, bloc.password);
+
     //Navigator.pushReplacementNamed(context, 'home');
   }
 }

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:crud_productos/src/utils/user_preferences.dart';
 import 'package:http/http.dart' as Http;
 
 class UserProvider {
   final String _firebaseToken = 'AIzaSyDVbGMhzimv0qDdsTk3O-tcLK65OI27uCk';
+  final _prefs = UserPreferences();
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     final authData = {
@@ -21,7 +23,8 @@ class UserProvider {
     print(decodeResp);
 
     if (decodeResp.containsKey('idToken')) {
-      //TODO: salvar token en el storage
+      _prefs.token = decodeResp['token'];
+
       return {'ok': true, 'token': decodeResp['idToken']};
     } else {
       return {'ok': false, 'message': decodeResp['error']['message']};
