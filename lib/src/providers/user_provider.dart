@@ -23,7 +23,7 @@ class UserProvider {
     print(decodeResp);
 
     if (decodeResp.containsKey('idToken')) {
-      _prefs.token = decodeResp['token'];
+      _prefs.token = decodeResp['idToken'];
 
       return {'ok': true, 'token': decodeResp['idToken']};
     } else {
